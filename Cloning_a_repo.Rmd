@@ -1,0 +1,26 @@
+---
+title: "Cloning a github repository"
+author: "Ruth Kelly"
+date: "9 January 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+####### Step by step guide to creating a new R project from a Github Repository
+
+1. Open your web browser and go to the website of the GitHub Repository that you want 
+    (e.g. https://github.com/Ruth-R-Kelly/GLM_workshop_IEA_2019)
+2.  Copy the web address of the repository (e.g. Cntl + C)
+3. Open RStudio
+4. In RStudio - click file, then New Project
+5. Select Version Control
+6. Select Git
+7. Insert the web address in the first text box 
+8. Click Create Project
+
+Done!! 
+
+Rstudio should now have created a new project and folder on your computer containing the files you saw in the Git Repository online.  In future, if you want to work with these files, just open this folder on your computer, and click on the .Rproj file. 

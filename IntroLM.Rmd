@@ -1,0 +1,107 @@
+---
+title: "Introduction to Linear Modelling - IEA 2019"
+author: "Hannah White"
+date: "8 January 2019"
+output: html_document
+---
+
+## Welcome 
+
+This document contains code snippets to accompany the "Session One: Introduction to Linear Modelling" workshop by Dr Ruth Kelly (TCD) & Dr Hannah White (UCD)
+  
+
+The slides from the presentations given at the workshop and code are contained in the github folder : https://github.com/Ruth-R-Kelly/GLM_workshop_IEA_2019 or can be automatically loaded in R. Additional datasets to investigate and analyse can also be found here. 
+
+In a single morning and code file, it's impossible to give more the a brief overview of this topic. 
+
+This worksheet will introduce linear regression and how to check whether any model assumptions are being broken. Linear regression will be introduced using Edgar Anderson's famous Iris dataset. This is freely available in R.  
+  
+First up, let's load the dataset and have a quick look at it.
+
+```{r }
+data(iris)
+head(iris) # this gives us the first 6 rows of the dataframe
+```
+
+## Exploring the data
+  
+We're going to model how petal length varies with petal width, so first let's plot it to check that a linear model is appropriate. 
+
+```{r }
+plot(Petal.Length ~ Petal.Width, data = iris)
+```
+  
+Okay, so it looks like there is probably a linear relationship. EXTRA: See if you can colour the dots in the plot by Species to get a better idea of what is going on.
+
+
+## Fitting a linear model
+
+
+
+```{r }
+m1 <- lm(Petal.Length ~ Petal.Width, data = iris)
+```
+
+  
+The fitted model is held in the object m1. We need to carry out model diagnostics to check that the model assumptions have not been broken.  
+  
+```{r}
+par(mfrow = c(2,2)) ## This sets up a 2 x 2 plotting frame
+plot(m1)
+```
+  
+The first plot is used to check the assumption of constant variance (homoscedacity). This should look like the sky at night.  
+The second plot is used to check the assumption of normally distributed errors. This is a qqplot and should follow a straight line.  
+This assumption can also be checked using a histogram of the model residuals or a formal test e.g. Shapiro-Wilk test.  
+  
+The second two plots are less important but give information similar to the first plot and on leverage (i.e. the influence of each data point), respectively.  
+  
+## Model Output
+  
+Now we need to see what the model has shown us i.e. is there a relationship between petal width and petal length? Can we reject the null hypothesis?  
+  
+```{r}
+summary(m1)
+```
+  
+There is a lot of information in the output but we can see that the intercept (the value of y when x is 0) is 1.08.  The slope parameter of petal width is 2.23. This is significant as the p value is < 0.05. 
+  
+The adjusted R-squared (variation in y explained by the variation in x) is 0.93. NB: If carrying out multiple regression and using R-squareds to compare models, always use the adjusted (not multiple) R-squared.  
+  
+  
+Finally, let's plot the model on the graph
+  
+```{r}
+par(mfrow = c(1,1)) # set the plotting frame back to just a single graphic 
+plot(Petal.Length ~ Petal.Width, data = iris)
+abline(m1, col = 'darkblue')
+```
+  
+  
+### Some extra things to try
+  
+## Multiple regression
+  
+Multiple continuous explanatory variables, because real life is rarely simple....  
+  
+```{r}
+m.mr1 <- lm(Petal.Length ~ Petal.Width * Sepal.Length, data = iris) # with interaction
+m.mr2 <- lm(Petal.Length ~ Petal.Width + Sepal.Length, data= iris) # without interaction
+```
+ 
+Check the model diagnostics for these.    
+    
+## ANCOVA  
+  
+Explanatory variables consist of both continuous and discrete terms so that multiple intercepts are fit.  
+  
+```{r}
+m.ancova <- lm(Petal.Length ~ Petal.Width * Species, data = iris) # fits 3 slopes 
+                                                                  # and 3 intercepts
+m.ancova2 <- lm(Petal.Length ~ Petal.Width + Species, data = iris) # fits common slope 
+                                                                   # but with 3 intercepts
+```
+  
+## Try other datasets  
+  
+Have a look at other datasets in R. There a lots in the package 'datasets', good ones to have a look at include mtcars and faithful, but there are plenty more!
